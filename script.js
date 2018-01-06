@@ -1,8 +1,8 @@
-var CANVAS_ID = "myCanevas";
+var CANVAS_ID = "myCanvas";
 var CANVAS_W = 50;
 var CANVAS_H = 50;
-var TILE_W = 25;
-var TILE_H = 25;
+var NB_W = 2;
+var NB_H = 2;
 var COLOR_FULL = "#000";
 var COLOR_EMPTY = "#FFF";
 
@@ -14,8 +14,10 @@ function initCanvas(id) {
 	var container = "body";
 	var canvas = createCanvas(id, CANVAS_W, CANVAS_H);
 	var body = document.getElementsByTagName(container)[0];
+	var grid = generateGrid(NB_W, NB_H);
+
 	body.appendChild(canvas);
-	randomFill(canvas, TILE_W, TILE_H);
+	drawTiles(canvas, grid);
 }
 
 function createCanvas (id, width, height) {
@@ -26,25 +28,34 @@ function createCanvas (id, width, height) {
 	return canvas;
 }
 
-function randomFill(canvas, tileWidth, tileHeight) {
-	var w = canvas.width / tileWidth;
-	var h = canvas.height / tileHeight;
+function drawTiles(canvas, grid) {
+	var tileWidth = canvas.width / grid[0].length;
+	var tileHeight = canvas.height / grid.length;
 	var ctx = canvas.getContext("2d");
 
-	for (var i = 0; i < w; i++) {
-		for (var j = 0; j < h; j++) {
-			ctx.fillStyle = chooseColor();
-			ctx.fillRect(i*tileWidth, j*tileHeight, tileWidth, tileHeight);
+	for (var i = 0; i < grid.length; i++) {
+		for (var j = 0; j < grid[i].length; j++) {
+			ctx.fillStyle = grid[i][j];
+			ctx.fillRect(j*tileWidth, i*tileHeight, tileWidth, tileHeight);
 		}
 	}
+}
+
+function generateGrid(width, height) {
+	var grid = new Array(height);
+	for (var i = 0; i < grid.length; i++) {
+		grid[i] = new Array(width);
+		for (var j = 0; j < grid[i].length; j++) {
+			grid[i][j] = chooseColor();
+		}
+	}
+
+	return grid;
 }
 
 function chooseColor() {
 	var r = Math.random();
 
-	if (r < 0.5) {
-		return COLOR_FULL;
-	} else {
-		return COLOR_EMPTY;
-	}
+	if (r < 0.5) return COLOR_EMPTY;
+	else return COLOR_FULL;
 }

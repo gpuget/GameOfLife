@@ -1,23 +1,28 @@
-var CANVAS_ID = "myCanvas";
-var CANVAS_W = 50;
-var CANVAS_H = 50;
-var NB_W = 2;
-var NB_H = 2;
-var COLOR_FULL = "#000";
-var COLOR_EMPTY = "#FFF";
+const CANVAS_ID = "myCanvas";
+const CANVAS_W = 50;
+const CANVAS_H = 50;
+const NB_W = 2;
+const NB_H = 2;
+const COLOR_FULL = "#000";
+const COLOR_EMPTY = "#FFF";
+const REFRESH_INTERVAL = 500;
+
+var grid;
 
 function init() {
 	initCanvas(CANVAS_ID);
+	window.setInterval(refreshCanvas, REFRESH_INTERVAL);
 }
 
 function initCanvas(id) {
 	var container = "body";
 	var canvas = createCanvas(id, CANVAS_W, CANVAS_H);
 	var body = document.getElementsByTagName(container)[0];
-	var grid = generateGrid(NB_W, NB_H);
+	grid = generateGrid(NB_W, NB_H);
 
 	body.appendChild(canvas);
 	drawTiles(canvas, grid);
+	console.log(canvas.getContext("2d"));
 }
 
 function createCanvas (id, width, height) {
@@ -58,4 +63,8 @@ function chooseColor() {
 
 	if (r < 0.5) return COLOR_EMPTY;
 	else return COLOR_FULL;
+}
+
+function refreshCanvas() {
+
 }

@@ -3,8 +3,8 @@ const CANVAS_W = 50;
 const CANVAS_H = 50;
 const NB_W = 2;
 const NB_H = 2;
-const COLOR_FULL = "#000";
-const COLOR_EMPTY = "#FFF";
+const COLOR_ALIVE = "#000";
+const COLOR_DEAD = "#FFF";
 const REFRESH_INTERVAL = 500;
 
 var grid;
@@ -22,7 +22,6 @@ function initCanvas(id) {
 
 	body.appendChild(canvas);
 	drawTiles(canvas, grid);
-	console.log(canvas.getContext("2d"));
 }
 
 function createCanvas (id, width, height) {
@@ -51,18 +50,14 @@ function generateGrid(width, height) {
 	for (var i = 0; i < grid.length; i++) {
 		grid[i] = new Array(width);
 		for (var j = 0; j < grid[i].length; j++) {
-			grid[i][j] = chooseColor();
+			var cell;
+			if (Math.random() < 0.5) cell = COLOR_DEAD;
+			else cell = COLOR_ALIVE;
+			grid[i][j] = cell;
 		}
 	}
 
 	return grid;
-}
-
-function chooseColor() {
-	var r = Math.random();
-
-	if (r < 0.5) return COLOR_EMPTY;
-	else return COLOR_FULL;
 }
 
 function refreshCanvas() {

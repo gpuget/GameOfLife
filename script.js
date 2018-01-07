@@ -1,17 +1,19 @@
 const CANVAS_ID = "myCanvas";
+const GENERATION_ID = "generationNumber";
 const CANVAS_W = 500;
 const CANVAS_H = 500;
 const NB_W = 50;
 const NB_H = 50;
 const COLOR_ALIVE = "#000";
 const COLOR_DEAD = "#FFF";
-const REFRESH_INTERVAL = 300;
+const REFRESH_INTERVAL = 1;
 
 var grid;
+var generation = 0;
 
 function init() {
 	initCanvas(CANVAS_ID);
-	window.setInterval(refreshCanvas, REFRESH_INTERVAL);
+	window.setInterval(refresh, REFRESH_INTERVAL);
 }
 
 function initCanvas(id) {
@@ -55,7 +57,6 @@ function generateGrid(width, height) {
 			else cell = COLOR_ALIVE;
 			grid[i].push(cell);
 		}
-		grid.push(grid[i]);
 	}
 
 	return grid;
@@ -66,7 +67,7 @@ function refreshCanvas() {
 	drawTiles(document.getElementById(CANVAS_ID), grid);
 }
 
-function neighbors(line, column) {
+function getNumberOfNeighbors(line, column) {
 	var res = 0;
 
 	for (var i = line - 1; i <= line + 1; i++) {
@@ -82,17 +83,16 @@ function neighbors(line, column) {
 	return res;
 }
 
-function neighborsGrid() {
-	var ng = [];
+function getNeighborsGrid() {
+	var neighborsGrid = [];
 	for (var i = 0; i < grid.length; i++) {
-		var n = [];
+		neighborsGrid[i] = [];
 		for (var j = 0; j < grid[i].length; j++) {
-			n.push(neighbors(i, j));
+			neighborsGrid[i].push(getNumberOfNeighbors(i, j));
 		}
-		ng.push(n);
 	}
 
-	return ng;
+	return neighborsGrid;
 }
 
 function born(i, j) {
@@ -104,8 +104,7 @@ function die(i, j) {
 }
 
 function refreshGrid() {
-	var ng = neighborsGrid();
-	console.log(ng);
+	var ng = getNeighborsGrid();
 	for (var i = 0; i < grid.length; i++) {
 		for (var j = 0; j < grid[i].length; j++) {
 			refreshCell(i, j, ng[i][j]);
@@ -116,4 +115,13 @@ function refreshGrid() {
 function refreshCell(i, j, n) {
 	if (n == 3) born(i, j);
 	else if (n < 2 || n > 3) die(i, j);
+}
+
+function refresh() {
+	refreshCanvas();
+	refreshGeneration();
+}
+
+function refreshGeneration() {
+	document.getElementById(GENERATION_ID).innerHTML = ++generation;
 }

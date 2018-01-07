@@ -4,9 +4,11 @@ const CANVAS_W = 500;
 const CANVAS_H = 500;
 const NB_W = 50;
 const NB_H = 50;
-const COLOR_ALIVE = "#000";
-const COLOR_DEAD = "#FFF";
-const REFRESH_INTERVAL = 1;
+const ALIVE_PERCENT = 0.1;
+const COLOR_DEFAULT = "#FFF";
+const COLOR_ALIVE = "#0A0";
+const COLOR_DEAD = "#AAA";
+const REFRESH_INTERVAL = 300;
 
 var grid;
 var generation = 0;
@@ -53,8 +55,8 @@ function generateGrid(width, height) {
 		grid[i] = [];
 		for (var j = 0; j < width; j++) {
 			var cell;
-			if (Math.random() < 0.5) cell = COLOR_DEAD;
-			else cell = COLOR_ALIVE;
+			if (Math.random() < ALIVE_PERCENT) cell = COLOR_ALIVE;
+			else cell = COLOR_DEFAULT;
 			grid[i].push(cell);
 		}
 	}

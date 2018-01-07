@@ -7,7 +7,7 @@ const NB_H = 50;
 const ALIVE_PERCENT = 0.1;
 const COLOR_DEFAULT = "#FFF";
 const COLOR_ALIVE = "#0A0";
-const COLOR_DEAD = "#AAA";
+const COLOR_DEAD = COLOR_DEFAULT;
 const REFRESH_INTERVAL = 300;
 
 var grid;
@@ -19,21 +19,12 @@ function init() {
 }
 
 function initCanvas(id) {
-	var container = "body";
-	var canvas = createCanvas(id, CANVAS_W, CANVAS_H);
-	var body = document.getElementsByTagName(container)[0];
+	var canvas = document.getElementById(CANVAS_ID);
+
+	canvas.width = CANVAS_W;
+	canvas.height = CANVAS_H;
 	generateGrid(NB_W, NB_H);
-
-	body.appendChild(canvas);
 	drawTiles(canvas, grid);
-}
-
-function createCanvas (id, width, height) {
-	var canvas = document.createElement("canvas");
-	canvas.id = id;
-	canvas.width = width;
-	canvas.height = height;
-	return canvas;
 }
 
 function drawTiles(canvas, grid) {
@@ -127,3 +118,6 @@ function refresh() {
 function refreshGeneration() {
 	document.getElementById(GENERATION_ID).innerHTML = ++generation;
 }
+
+// Lauch on load
+init();
